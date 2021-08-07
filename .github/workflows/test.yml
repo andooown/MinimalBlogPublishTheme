@@ -23,6 +23,6 @@ jobs:
       - name: Resolve packages
         run: swift package resolve
       - name: Build
-        run: swift build
+        run: swift build --enable-test-discovery
       - name: Run tests
-        run: swift test
+        run: swift test --enable-test-discovery
