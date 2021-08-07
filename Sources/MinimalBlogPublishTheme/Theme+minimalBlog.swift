@@ -9,8 +9,8 @@ import Foundation
 import Publish
 
 public extension Theme {
-    static var minimalBlog: Self {
-        Theme(htmlFactory: MinimalBlogHTMLFactory(),
+    static func minimalBlog(primarySection: Site.SectionID) -> Self {
+        Theme(htmlFactory: MinimalBlogHTMLFactory(primarySection: primarySection),
               resourcePaths: [])
     }
 }

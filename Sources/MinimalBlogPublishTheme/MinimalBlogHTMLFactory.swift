@@ -5,13 +5,34 @@
 //  Created by Yoshikazu Ando on 2021/08/08.
 //
 
+import Collections
 import Foundation
 import Plot
 import Publish
 
 struct MinimalBlogHTMLFactory<Site: Website>: HTMLFactory {
+    let primarySection: Site.SectionID
+}
+
+extension MinimalBlogHTMLFactory {
     func makeIndexHTML(for index: Index, context: PublishingContext<Site>) throws -> HTML {
-        HTML()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy"
+
+        return HTML(head: [
+            .title("TITLE"),
+            .encoding(.utf8)
+        ]) {
+            let dividedItems = divideItems(context.sections[primarySection].items)
+            for (date, items) in dividedItems {
+                H2(dateFormatter.string(from: date))
+                List(items) { item in
+                    ListItem {
+                        Link(item.content.title, url: item.path.absoluteString)
+                    }
+                }
+            }
+        }
     }
 
     func makeSectionHTML(for section: Section<Site>, context: PublishingContext<Site>) throws -> HTML {
@@ -32,5 +53,17 @@ struct MinimalBlogHTMLFactory<Site: Website>: HTMLFactory {
 
     func makeTagDetailsHTML(for page: TagDetailsPage, context: PublishingContext<Site>) throws -> HTML? {
         HTML()
+    }
+}
+
+extension MinimalBlogHTMLFactory {
+    private func divideItems(_ items: [Item<Site>]) -> OrderedDictionary<Date, [Item<Site>]> {
+        let calendar = Calendar(identifier: .gregorian)
+        let sortedItems = items.sorted(by: { $0.date > $1.date })
+
+        return OrderedDictionary(grouping: sortedItems) { item in
+            let components = calendar.dateComponents([.year], from: item.date)
+            return calendar.date(from: components)!
+        }
     }
 }
