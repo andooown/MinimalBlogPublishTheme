@@ -12,7 +12,6 @@ jobs:
           - ubuntu-latest
           - macos-latest
         swift:
-          - "5.3"
           - "5.4"
     runs-on: ${{ matrix.os }}
     steps:
