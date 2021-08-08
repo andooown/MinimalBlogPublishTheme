@@ -22,6 +22,7 @@ extension MinimalBlogHTMLFactory {
         return HTML(head: [
             .title("TITLE"),
             .encoding(.utf8),
+            .viewport(.accordingToDevice, initialScale: 1),
             .link(.href(URL(string: "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css")!), .rel(.stylesheet), .integrity("sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"), .attribute(named: "crossorigin", value: "anonymous")),
             .stylesheet("/styles.css"),
         ]) {
@@ -40,6 +41,7 @@ extension MinimalBlogHTMLFactory {
         return HTML(head: [
             .title("TITLE"),
             .encoding(.utf8),
+            .viewport(.accordingToDevice, initialScale: 1),
             .link(.href(URL(string: "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css")!), .rel(.stylesheet), .integrity("sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"), .attribute(named: "crossorigin", value: "anonymous")),
             .stylesheet("/styles.css"),
         ]) {
