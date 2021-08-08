@@ -88,7 +88,7 @@ struct ItemList<Site: Website>: Component {
     }
 
     var body: Component {
-        Div {
+        ComponentGroup {
             for (date, items) in dividedItems {
                 H2(dateFormatter.string(from: date))
                 List(items) { item in
