@@ -11,6 +11,6 @@ import Publish
 public extension Theme {
     static func minimalBlog(primarySection: Site.SectionID) -> Self {
         Theme(htmlFactory: MinimalBlogHTMLFactory(primarySection: primarySection),
-              resourcePaths: [])
+              resourcePaths: ["Resources/MinimalBlogPublishTheme/styles.css"])
     }
 }
