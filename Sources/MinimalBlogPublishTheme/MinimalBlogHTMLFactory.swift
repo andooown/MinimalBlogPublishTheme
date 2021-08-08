@@ -23,20 +23,20 @@ extension MinimalBlogHTMLFactory {
             .title("TITLE"),
             .encoding(.utf8)
         ]) {
-            let dividedItems = divideItems(context.sections[primarySection].items)
-            for (date, items) in dividedItems {
-                H2(dateFormatter.string(from: date))
-                List(items) { item in
-                    ListItem {
-                        Link(item.content.title, url: item.path.absoluteString)
-                    }
-                }
-            }
+            ItemList(divideItems(context.sections[primarySection].items))
         }
     }
 
     func makeSectionHTML(for section: Section<Site>, context: PublishingContext<Site>) throws -> HTML {
-        HTML()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy"
+
+        return HTML(head: [
+            .title("TITLE"),
+            .encoding(.utf8)
+        ]) {
+            ItemList(divideItems(section.items))
+        }
     }
 
     func makeItemHTML(for item: Item<Site>, context: PublishingContext<Site>) throws -> HTML {
@@ -64,6 +64,35 @@ extension MinimalBlogHTMLFactory {
         return OrderedDictionary(grouping: sortedItems) { item in
             let components = calendar.dateComponents([.year], from: item.date)
             return calendar.date(from: components)!
+        }
+    }
+}
+
+// MARK: - Components
+
+struct ItemList<Site: Website>: Component {
+    let dividedItems: OrderedDictionary<Date, [Item<Site>]>
+    
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy"
+        return formatter
+    }()
+
+    init(_ dividedItems: OrderedDictionary<Date, [Item<Site>]>) {
+        self.dividedItems = dividedItems
+    }
+
+    var body: Component {
+        Div {
+            for (date, items) in dividedItems {
+                H2(dateFormatter.string(from: date))
+                List(items) { item in
+                    ListItem {
+                        Link(item.content.title, url: item.path.absoluteString)
+                    }
+                }
+            }
         }
     }
 }
